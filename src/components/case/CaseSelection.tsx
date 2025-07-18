@@ -1,15 +1,23 @@
+// src/components/case/CaseSelection.tsx
 import React from 'react';
 import PatientCard from './PatientCard';
 import ModeSelector from './ModeSelector';
-import { PATIENTS, GAME_MODES } from '../../data/patients';
-import { useGameContext } from '../../context/GameContext';
+import { GAME_MODES, getPatientsByGameMode, getRandomPatient, type GameModeType } from '../../data/patients';
+import { useGameContext } from '../../context/useGameContext';
 
 const CaseSelection: React.FC = () => {
   const { actions } = useGameContext();
-  const [selectedMode, setSelectedMode] = React.useState('TRAINING');
+  const [selectedMode, setSelectedMode] = React.useState<GameModeType>('TRAINING');
   
-  const handleSelectPatient = (patient: typeof PATIENTS[0]) => {
-    actions.startNewCase(patient, selectedMode as any);
+  const availablePatients = getPatientsByGameMode(selectedMode);
+  
+  const handleSelectPatient = (patient: any) => {
+    actions.startNewCase(patient, selectedMode);
+  };
+
+  const handleRandomCase = () => {
+    const randomPatient = getRandomPatient(selectedMode);
+    actions.startNewCase(randomPatient, selectedMode);
   };
 
   return (
@@ -23,8 +31,17 @@ const CaseSelection: React.FC = () => {
         onSelectMode={setSelectedMode} 
       />
       
-      <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {PATIENTS.map(patient => (
+      <div className="text-center mb-6">
+        <button 
+          onClick={handleRandomCase}
+          className="bg-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors"
+        >
+          🎲 Caso Aleatorio
+        </button>
+      </div>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {availablePatients.map(patient => (
           <PatientCard 
             key={patient.id}
             patient={patient}
