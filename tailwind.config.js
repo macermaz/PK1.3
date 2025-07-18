@@ -1,15 +1,20 @@
+/** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
       colors: {
-        psykat: '#8B7EC8',
-        accent: '#98FB98',
+        primary: '#a78bfa',
+        'primary-dark': '#8b7ec8',
+        accent: '#e9d5ff',
+      },
+      fontFamily: {
+        sans: ['Nunito', 'sans-serif'],
+      },
+      animation: {
+        'bounce': 'bounce 1s infinite',
       }
     },
   },
   plugins: [],
-}
+};

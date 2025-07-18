@@ -1,33 +1,25 @@
 // src/context/GameContext.tsx
 import React, { createContext, useState, type ReactNode } from 'react';
+import type { Patient } from '@/data/patients';
 
-interface GameState {
-  gameMode: 'TRAINING' | 'HARD' | 'REALISTIC';
-  activeCases: 3[]; // Especifica un tipo mejor
-  // ... otras propiedades
+export type GameMode = 'TRAINING' | 'HARD' | 'REALISTIC';
+
+export interface GameState {
+  currentPatient: Patient | null;
+  gameMode: GameMode;
+  activeCases: Patient[];
 }
 
-const initialState: GameState = {
-  gameMode: 'TRAINING',
-  activeCases: [],
-};
+export interface GameActions {
+  startNewCase: (patient: Patient | null, mode: GameMode) => void;
+  endCurrentCase: () => void;
+  openActiveCase: (patientId: string) => void;
+  removeActiveCase: (patientId: string) => void;
+}
 
-export const GameContext = createContext<{
+export interface GameContextType {
   state: GameState;
-  setState: React.Dispatch<React.SetStateAction<GameState>>;
-}>({
-  state: initialState,
-  setState: () => null,
-});
+  actions: GameActions;
+}
 
-export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [state, setState] = useState(initialState);
-  
-  return (
-    <GameContext.Provider value={{ state, setState }}>
-      {children}
-    </GameContext.Provider>
-  );
-};
-
-// Remove useGameContext from this file and move it to a new file named useGameContext.ts
+export const GameContext = createContext<GameContextType | null>(null);

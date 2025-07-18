@@ -1,5 +1,6 @@
+// src/context/useGameContext.ts
 import { useContext } from 'react';
-import { GameContext } from '../../GameContext copy';
+import { GameContext } from './GameContext';
 
 export const useGameContext = () => {
   const context = useContext(GameContext);

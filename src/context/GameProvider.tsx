@@ -1,9 +1,10 @@
+// src/context/GameProvider.tsx
 import React, { useState } from 'react';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import type { ReactNode } from 'react';
 import type { Patient } from '@/data/patients';
-import { GameContext } from '@/context/GameContext';
-import type { GameState, GameActions } from '../../GameContext copy';
+import { GameContext } from './GameContext';
+import type { GameState, GameActions, GameMode } from './GameContext';
 
 export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [activeCases, setActiveCases] = useLocalStorage<Patient[]>('psykat-active-cases', []);
@@ -14,7 +15,7 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   });
 
   const actions: GameActions = {
-    startNewCase: (patient, mode) => {
+    startNewCase: (patient: Patient | null, mode: GameMode) => {
       if (patient) {
         let updatedCases = state.activeCases.filter((c: Patient) => c.id !== patient.id);
         if (updatedCases.length >= 3) {
