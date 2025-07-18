@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import type { ReactNode } from 'react';
 import type { Patient } from '@/data/patients';
-import { GameContext } from '../../GameContext copy';
+import { GameContext } from '@/context/GameContext';
 import type { GameState, GameActions } from '../../GameContext copy';
 
 export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) => {

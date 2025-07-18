@@ -12,7 +12,7 @@ const initialState: GameState = {
   activeCases: [],
 };
 
-const GameContext = createContext<{
+export const GameContext = createContext<{
   state: GameState;
   setState: React.Dispatch<React.SetStateAction<GameState>>;
 }>({

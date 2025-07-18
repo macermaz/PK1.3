@@ -1,7 +1,15 @@
 
 @import "tailwindcss/preflight";
+@tailwind base;
+@tailwind components;
 @tailwind utilities;
 
+root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
 body {
   margin: 0;
   font-family: 'Nunito', sans-serif;

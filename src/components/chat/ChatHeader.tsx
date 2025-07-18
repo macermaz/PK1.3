@@ -1,5 +1,5 @@
 import React from 'react';
-import type { Patient } from '@/data/patients';
+import type { Patient } from '../../data/patients';
 
 interface ChatHeaderProps {
   patient: Patient;

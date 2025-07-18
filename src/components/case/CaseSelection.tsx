@@ -2,7 +2,7 @@ import React from 'react';
 import PatientCard from './PatientCard';
 import ModeSelector from './ModeSelector';
 import { PATIENTS, GAME_MODES } from '../../data/patients';
-import { useGameContext } from '../../contexts/GameContext';
+import { useGameContext } from '../../context/GameContext';
 
 const CaseSelection: React.FC = () => {
   const { actions } = useGameContext();

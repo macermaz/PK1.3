@@ -4,7 +4,7 @@ import MessageBubble from './MessageBubble';
 import ChatInput from './ChatInput';
 import { useGameSession } from '@/hooks/useGameSession';
 import type { Patient } from '@/data/patients';
-import { useGameContext } from '../../context/useGameContext';
+import { useGameContext } from '@/context/useGameContext';
 
 const ChatScreen: React.FC<{ patient: Patient }> = ({ patient }) => {
   const { messages, sendMessage, questionsLeft, sessionScore, isThinking } = useGameSession(patient);
