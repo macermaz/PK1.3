@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import type { ReactNode } from 'react';
 import type { Patient } from '@/data/patients';
+import { getRandomPatient } from '@/data/patients';
 import { GameContext } from './GameContext';
 import type { GameState, GameActions, GameMode } from './GameContext';
 
@@ -11,52 +12,72 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [state, setState] = useState<GameState>({
     currentPatient: null,
     gameMode: 'TRAINING',
-    activeCases
+    activeCases,
+    showModeSelection: false
   });
 
   const actions: GameActions = {
-    startNewCase: (patient: Patient | null, mode: GameMode) => {
-      if (patient) {
-        let updatedCases = state.activeCases.filter((c: Patient) => c.id !== patient.id);
-        if (updatedCases.length >= 3) {
-          updatedCases = updatedCases.slice(1);
-        }
-        updatedCases = [...updatedCases, patient];
-        setActiveCases(updatedCases);
-        setState({
-          currentPatient: patient,
-          gameMode: mode,
-          activeCases: updatedCases
-        });
-      } else {
-        setState({
-          ...state,
-          currentPatient: null
-        });
-      }
-    },
-    endCurrentCase: () => {
-      setState({
-        ...state,
+    startNewCase: () => {
+      setState(prev => ({
+        ...prev,
+        showModeSelection: true,
         currentPatient: null
+      }));
+    },
+
+    selectModeAndStartCase: (mode: GameMode) => {
+      const randomPatient = getRandomPatient(mode);
+      
+      // Añadir a casos activos
+      let updatedCases = state.activeCases.filter((c: Patient) => c.id !== randomPatient.id);
+      if (updatedCases.length >= 3) {
+        updatedCases = updatedCases.slice(1);
+      }
+      updatedCases = [...updatedCases, randomPatient];
+      setActiveCases(updatedCases);
+
+      setState({
+        currentPatient: randomPatient,
+        gameMode: mode,
+        activeCases: updatedCases,
+        showModeSelection: false
       });
     },
+    
+    endCurrentCase: () => {
+      setState(prev => ({
+        ...prev,
+        currentPatient: null,
+        showModeSelection: false
+      }));
+    },
+    
     openActiveCase: (patientId: string) => {
       const patient = state.activeCases.find((c: Patient) => c.id === patientId);
       if (patient) {
-        setState({
-          ...state,
-          currentPatient: patient
-        });
+        setState(prev => ({
+          ...prev,
+          currentPatient: patient,
+          showModeSelection: false
+        }));
       }
     },
+    
     removeActiveCase: (patientId: string) => {
       const updatedCases = state.activeCases.filter((c: Patient) => c.id !== patientId);
       setActiveCases(updatedCases);
-      setState({
-        ...state,
+      setState(prev => ({
+        ...prev,
         activeCases: updatedCases
-      });
+      }));
+    },
+
+    backToMenu: () => {
+      setState(prev => ({
+        ...prev,
+        showModeSelection: false,
+        currentPatient: null
+      }));
     }
   };
 

@@ -1,5 +1,6 @@
 // src/context/GameContext.tsx
-import React, { createContext, useState, type ReactNode } from 'react';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import React, { createContext } from 'react';
 import type { Patient } from '@/data/patients';
 
 export type GameMode = 'TRAINING' | 'HARD' | 'REALISTIC';
@@ -8,13 +9,16 @@ export interface GameState {
   currentPatient: Patient | null;
   gameMode: GameMode;
   activeCases: Patient[];
+  showModeSelection: boolean;
 }
 
 export interface GameActions {
-  startNewCase: (patient: Patient | null, mode: GameMode) => void;
+  startNewCase: () => void;
+  selectModeAndStartCase: (mode: GameMode) => void;
   endCurrentCase: () => void;
   openActiveCase: (patientId: string) => void;
   removeActiveCase: (patientId: string) => void;
+  backToMenu: () => void;
 }
 
 export interface GameContextType {
